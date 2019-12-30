@@ -1,4 +1,5 @@
 import passport from 'passport'
+import { pick, keys, isEqual } from 'lodash'
 import { Router } from 'express'
 import GooglStrategy from 'passport-google-oauth20'
 import FacebookStrategy from 'passport-facebook'
@@ -16,16 +17,43 @@ import jwt from 'jsonwebtoken'
 const socialCB = async (accessToken, refreshToken, profile, done) => {
   try {
     console.log(profile)
-    const user = await User.findOne({ socialId: profile._json.sub }).exec()
+    const Profile = {
+      name: profile._json.name,
+      sId: profile.id,
+      provider: profile.provider,
+      email: profile.emails ? profile.emails[0].value : 'no_email',
+      profileImageURL: profile.photos ? profile.photos[0].value : 'no_image'
+    }
+    const user = await User.findOne({ sId: Profile.sId })
+      .lean()
+      .exec()
+
     if (!user) {
-      const newUser = await User.create({
-        name: profile._json.name,
-        socialId: profile.id,
-        provider: profile.provider,
-        profileImageURL: profile.photos? profile.photos[0].value : 'no_image'
-      })
+      const newUser = await User.create(Profile)
       return done(null, newUser)
     }
+    const oldProfile = pick(
+      user,
+      keys({
+        name: null,
+        sId: null,
+        provider: null,
+        email: null,
+        profileImageURL: null
+      })
+    )
+    // Update user if profile info has changed
+    if (!isEqual(Profile, oldProfile)) {
+      const updatedUser = await User.findOneAndUpdate(
+        { sId: Profile.sId },
+        Profile,
+        { new: true }
+      )
+        .lean()
+        .exec()
+      return done(null, updatedUser)
+    }
+
     return done(null, user)
   } catch (e) {
     console.log(e)
@@ -47,7 +75,7 @@ passport.use(
     {
       clientID: facebook_client_id,
       clientSecret: facebook_client_secret,
-      callbackURL: 'http://localhost:3000/signin/facebook/redirect'
+      callbackURL: '/signin/facebook/redirect'
     },
     socialCB
   )
@@ -72,7 +100,7 @@ const router = Router()
 router.get(
   '/google/',
   passport.authenticate('google', {
-    scope: ['profile']
+    scope: ['profile', 'email']
   }),
   (req, res) => {
     res.json({ ok: true })
