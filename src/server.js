@@ -19,7 +19,7 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-app.use('/signin/google', signin)
+app.use('/signin', signin)
 app.use('/api', protect)
 app.use('/api/user', userRouter)
 app.use('/api/note', noteRouter)
