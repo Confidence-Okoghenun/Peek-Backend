@@ -8,7 +8,7 @@ import { connect } from './utils/db'
 import userRouter from './resources/user/user.router'
 import noteRouter from './resources/note/note.router'
 import { signin, protect } from './utils/auth'
-
+import passport from 'passport'
 
 export const app = express()
 
@@ -18,6 +18,7 @@ app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
+app.use(passport.initialize());
 
 app.use('/signin', signin)
 app.use('/api', protect)

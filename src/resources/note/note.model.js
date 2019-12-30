@@ -2,11 +2,21 @@ import mongoose from 'mongoose'
 
 const noteSchema = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
-      required: true,
       trim: true,
-      maxlength: 50
+      maxlength: 200,
+      default: ''
+    },
+    label: {
+      type: String,
+      trim: true,
+      maxlength: 20,
+      default: ''
+    },
+    content: {
+      type: String,
+      default: ''
     },
     pinned: {
       type: Boolean,
@@ -14,7 +24,6 @@ const noteSchema = new mongoose.Schema(
       enum: [true, false],
       default: false
     },
-    content: String,
     due: Date,
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,

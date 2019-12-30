@@ -1,8 +1,8 @@
 import passport from 'passport'
 import { pick, keys, isEqual } from 'lodash'
 import { Router } from 'express'
-import GooglStrategy from 'passport-google-oauth20'
-import FacebookStrategy from 'passport-facebook'
+import FacebookTokenStrategy from 'passport-facebook-token'
+import { Strategy as GoogleTokenStrategy } from 'passport-google-token'
 
 import config from '../config'
 import {
@@ -24,12 +24,11 @@ const socialCB = async (accessToken, refreshToken, profile, done) => {
       email: profile.emails ? profile.emails[0].value : 'no_email',
       profileImageURL: profile.photos ? profile.photos[0].value : 'no_image'
     }
-    const user = await User.findOne({ sId: Profile.sId })
-      .lean()
-      .exec()
+    const user = await User.findOne({ sId: Profile.sId }).exec()
 
     if (!user) {
       const newUser = await User.create(Profile)
+      console.log('## created new user')
       return done(null, newUser)
     }
     const oldProfile = pick(
@@ -48,12 +47,11 @@ const socialCB = async (accessToken, refreshToken, profile, done) => {
         { sId: Profile.sId },
         Profile,
         { new: true }
-      )
-        .lean()
-        .exec()
+      ).exec()
+      console.log('## updated user')
       return done(null, updatedUser)
     }
-
+    console.log('## found user')
     return done(null, user)
   } catch (e) {
     console.log(e)
@@ -61,21 +59,19 @@ const socialCB = async (accessToken, refreshToken, profile, done) => {
 }
 
 passport.use(
-  new GooglStrategy(
+  new GoogleTokenStrategy(
     {
       clientID: google_client_id,
-      clientSecret: google_client_secret,
-      callbackURL: '/signin/google/redirect'
+      clientSecret: google_client_secret
     },
     socialCB
   )
 )
 passport.use(
-  new FacebookStrategy(
+  new FacebookTokenStrategy(
     {
       clientID: facebook_client_id,
-      clientSecret: facebook_client_secret,
-      callbackURL: '/signin/facebook/redirect'
+      clientSecret: facebook_client_secret
     },
     socialCB
   )
@@ -97,33 +93,28 @@ export const verifyToken = token =>
 
 const router = Router()
 
-router.get(
-  '/google/',
-  passport.authenticate('google', {
-    scope: ['profile', 'email']
-  }),
-  (req, res) => {
-    res.json({ ok: true })
-  }
-)
-
-router.get(
-  '/google/redirect',
-  passport.authenticate('google', { session: false }),
-  (req, res) => {
-    const token = newToken(req.user)
-    return res.status(201).send({ token })
-  }
-)
-router.get('/facebook/', passport.authenticate('facebook'), (req, res) => {
+router.post('/', (req, res) => {
   res.json({ ok: true })
 })
 
-router.get(
-  '/facebook/redirect',
-  passport.authenticate('facebook', { session: false }),
+router.post(
+  '/google',
+  passport.authenticate('google-token', { session: false }),
   (req, res) => {
     const token = newToken(req.user)
+    console.log('## sending user token to client')
+
+    return res.status(201).send({ token })
+  }
+)
+
+router.post(
+  '/facebook',
+  passport.authenticate('facebook-token', { session: false }),
+  (req, res) => {
+    const token = newToken(req.user)
+    console.log('## sending user token to client')
+
     return res.status(201).send({ token })
   }
 )
