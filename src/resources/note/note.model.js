@@ -12,6 +12,7 @@ const noteSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 20,
+      lowercase: true,
       default: ''
     },
     content: {
