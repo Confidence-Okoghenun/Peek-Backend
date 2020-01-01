@@ -3,5 +3,5 @@ export const config = {
     jwt: process.env.jwt_key
   },
   dbUrl:
-    'mongodb+srv://cloud:cloud@cloud-r4vra.mongodb.net/test?retryWrites=true&w=majority'
+    'mongodb+srv://cloud:cloud@cloud-r4vra.mongodb.net/peeker?retryWrites=true&w=majority'
 }
