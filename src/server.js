@@ -21,6 +21,7 @@ app.use(morgan('dev'))
 app.use(passport.initialize())
 
 // Test if server is running
+console.log(process.env.PORT)
 app.get('/', (req, res) => {
   res.json({ ok: true })
 })
