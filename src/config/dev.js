@@ -6,5 +6,5 @@ export const config = {
   secrets: {
     jwt: process.env.jwt_key
   },
-  dbUrl: 'mongodb://localhost:27017/peek'
+  dbUrl: 'mongodb://localhost:27017/peeker'
 }
