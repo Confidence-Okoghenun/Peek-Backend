@@ -20,10 +20,6 @@ app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 app.use(passport.initialize())
 
-// Test if server is running
-app.get('/', (req, res) => {
-  res.json({ ok: true })
-})
 app.use('/signin', signin)
 app.use('/api', protect)
 app.use('/api/user', userRouter)

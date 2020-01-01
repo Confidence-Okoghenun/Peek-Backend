@@ -1,7 +1,10 @@
-import { jwt_key } from './keys'
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load()
+}
+
 export const config = {
   secrets: {
-    jwt: jwt_key
+    jwt: process.env.jwt_key
   },
   dbUrl: 'mongodb://localhost:27017/peek'
 }

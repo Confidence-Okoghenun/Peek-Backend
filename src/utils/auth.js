@@ -5,14 +5,12 @@ import FacebookTokenStrategy from 'passport-facebook-token'
 import { Strategy as GoogleTokenStrategy } from 'passport-google-token'
 
 import config from '../config'
-import {
-  google_client_id,
-  google_client_secret,
-  facebook_client_id,
-  facebook_client_secret
-} from '../config/keys'
 import { User } from '../resources/user/user.model'
 import jwt from 'jsonwebtoken'
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load()
+}
 
 const socialCB = async (accessToken, refreshToken, profile, done) => {
   try {
@@ -61,8 +59,8 @@ const socialCB = async (accessToken, refreshToken, profile, done) => {
 passport.use(
   new GoogleTokenStrategy(
     {
-      clientID: google_client_id,
-      clientSecret: google_client_secret
+      clientID: process.env.google_client_id,
+      clientSecret: process.env.google_client_secret
     },
     socialCB
   )
@@ -70,8 +68,8 @@ passport.use(
 passport.use(
   new FacebookTokenStrategy(
     {
-      clientID: facebook_client_id,
-      clientSecret: facebook_client_secret
+      clientID: process.env.facebook_client_id,
+      clientSecret: process.env.facebook_client_secret
     },
     socialCB
   )
