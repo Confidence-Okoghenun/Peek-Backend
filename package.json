@@ -7,7 +7,7 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "dev": "nodemon --exec yarn restart",
-    "restart": "rimraf dist && yarn build && yarn start",
+    "restart": "rimraf dist && yarn build && clear && yarn start",
     "start": "node dist/index.js"
   },
   "dependencies": {

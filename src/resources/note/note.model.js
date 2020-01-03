@@ -35,6 +35,6 @@ const noteSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-noteSchema.index({ user: 1, name: 1 }, { unique: true })
+noteSchema.index({ user: 1, name: 1 })
 
 export const Note = mongoose.model('note', noteSchema)
