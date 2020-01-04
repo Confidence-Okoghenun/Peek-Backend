@@ -8,13 +8,15 @@ const noteSchema = new mongoose.Schema(
       maxlength: 200,
       default: ''
     },
-    label: {
-      type: String,
-      trim: true,
-      maxlength: 20,
-      lowercase: true,
-      default: ''
-    },
+    label: [
+      {
+        type: String,
+        trim: true,
+        maxlength: 20,
+        lowercase: true,
+        default: ''
+      }
+    ],
     content: {
       type: String,
       default: ''
