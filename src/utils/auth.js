@@ -20,7 +20,12 @@ const socialCB = async (accessToken, refreshToken, profile, done) => {
       sId: profile.id,
       provider: profile.provider,
       email: profile.emails ? profile.emails[0].value : 'no_email',
-      profileImageURL: profile.photos ? profile.photos[0].value : 'no_image'
+      profileImageURL:
+        profile.provider === 'facebook'
+          ? profile.photos[0].value
+          : profile.provider === 'google'
+          ? profile._json.picture
+          : 'no_image'
     }
     const user = await User.findOne({ sId: Profile.sId }).exec()
 

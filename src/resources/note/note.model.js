@@ -27,6 +27,12 @@ const noteSchema = new mongoose.Schema(
       enum: [true, false],
       default: false
     },
+    status: {
+      type: String,
+      required: true,
+      enum: ['note', 'trash', 'archive'],
+      default: 'note'
+    },
     due: Date,
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
