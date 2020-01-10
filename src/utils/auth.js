@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const socialCB = async (accessToken, refreshToken, profile, done) => {
   try {
-    console.log(profile)
+    // console.log(profile)
     const Profile = {
       name: profile._json.name,
       sId: profile.id,
