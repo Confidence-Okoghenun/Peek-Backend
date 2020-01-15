@@ -61,7 +61,7 @@ export default {
       }
 
       await agenda.start()
-      const now = moment().format()
+      const now = moment().format('YYYY-MM-DDTHH:mm:ss')
       const date = moment(updatedDoc.due).format()
 
       if (moment(date).isSameOrAfter(now)) {
