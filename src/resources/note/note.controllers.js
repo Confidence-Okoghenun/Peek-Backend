@@ -62,7 +62,7 @@ export default {
 
       await agenda.start()
       const now = moment().format('YYYY-MM-DDTHH:mm:ss')
-      const date = moment(updatedDoc.due).format()
+      const date = moment(updatedDoc.due).format('YYYY-MM-DDTHH:mm:ss')
 
       if (moment(date).isSameOrAfter(now)) {
         console.log('## setting agenda for date: '+ date)
