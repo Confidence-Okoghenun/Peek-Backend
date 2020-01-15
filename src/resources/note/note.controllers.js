@@ -15,7 +15,7 @@ const agenda = new Agenda({
 
 agenda.define('send reminders', async job => {
   const { note, subscription } = job.attrs.data
-  
+
   console.log('fired reminder for ' + note._id)
   const payload = JSON.stringify({
     title: note.title || note.body || 'Reminder'
@@ -61,11 +61,17 @@ export default {
       }
 
       await agenda.start()
-      const now = moment().format('YYYY-MM-DDTHH:mm:ss')
-      const date = moment(updatedDoc.due).format('YYYY-MM-DDTHH:mm:ss')
+      // const now = moment().format('YYYY-MM-DDTHH:mm:ss')
+      // const date = moment(updatedDoc.due).format('YYYY-MM-DDTHH:mm:ss')
+
+      const now = moment().toISOString()
+      const date = moment(updatedDoc.due).toISOString()
+
+      console.log('## now: ' + now)
+      console.log('## date: ' + date)
 
       if (moment(date).isSameOrAfter(now)) {
-        console.log('## setting agenda for date: '+ date)
+        console.log('## setting agenda for date: ' + date)
         await agenda.schedule(date, 'send reminders', {
           note: updatedDoc,
           subscription
