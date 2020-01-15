@@ -9,6 +9,7 @@ import userRouter from './resources/user/user.router'
 import noteRouter from './resources/note/note.router'
 import { signin, protect } from './utils/auth'
 import passport from 'passport'
+import webpush from 'web-push'
 
 export const app = express()
 
@@ -19,6 +20,11 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 app.use(passport.initialize())
+webpush.setVapidDetails(
+  'mailto:test@test.com',
+  process.env.webPush_publicKey,
+  process.env.webPush_privateKey
+)
 
 // Test if server is running
 app.get('/', (req, res) => {

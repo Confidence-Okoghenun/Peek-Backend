@@ -23,12 +23,7 @@ export const getMany = model => async (req, res) => {
       .lean()
       .exec()
 
-    if (model.modelName == 'note') {
-      res.status(200).json({ data: docs.reverse() })
-    } else {
-      res.status(200).json({ data: docs })
-    }
-
+    res.status(200).json({ data: docs })
   } catch (e) {
     console.error(e)
     res.status(400).end()
