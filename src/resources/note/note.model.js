@@ -33,7 +33,10 @@ const noteSchema = new mongoose.Schema(
       enum: ['note', 'trash', 'archive'],
       default: 'note'
     },
-    due: Date,
+    due: {
+      type: Date,
+      default: ''
+    },
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
