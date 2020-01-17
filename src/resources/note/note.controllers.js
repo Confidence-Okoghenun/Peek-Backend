@@ -64,7 +64,7 @@ export default {
       // const now = moment().format('YYYY-MM-DDTHH:mm:ss')
       // const date = moment(updatedDoc.due).format('YYYY-MM-DDTHH:mm:ss')
 
-      const now = moment().format()
+      const now = clientNow
       const date = updatedDoc.due
 
       // const now = moment.utc().local().toISOString()

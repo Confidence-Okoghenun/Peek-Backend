@@ -34,7 +34,7 @@ const noteSchema = new mongoose.Schema(
       default: 'note'
     },
     due: {
-      type: Date,
+      type: String,
       default: ''
     },
     createdBy: {
