@@ -16,9 +16,11 @@ const agenda = new Agenda({
 agenda.define('send reminders', async job => {
   const { note, subscription } = job.attrs.data
 
-  console.log('fired reminder for ' + note._id)
+  console.log('## fired reminder for ' + note._id)
   const payload = JSON.stringify({
-    title: note.title || note.body || 'Reminder'
+    title: note.title,
+    body: note.content,
+    time: moment(note.due).format('MMMM Do YYYY, h:mm a')
   })
 
   webpush
@@ -61,17 +63,8 @@ export default {
       }
 
       await agenda.start()
-      // const now = moment().format('YYYY-MM-DDTHH:mm:ss')
-      // const date = moment(updatedDoc.due).format('YYYY-MM-DDTHH:mm:ss')
-
       const now = clientNow
       const date = updatedDoc.due
-
-      // const now = moment.utc().local().toISOString()
-      // const date = moment(updatedDoc.due).format()
-
-      console.log('## now: ' + now)
-      console.log('## date: ' + date)
 
       if (moment(date).isSameOrAfter(now)) {
         console.log('## setting agenda for date: ' + date)
@@ -90,4 +83,3 @@ export default {
     }
   }
 }
-console.log(config.dbUrl)
