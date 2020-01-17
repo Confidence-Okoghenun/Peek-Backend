@@ -43,8 +43,8 @@ export default {
   },
   async updateOne(req, res) {
     try {
-      const { subscription } = req.body
-      req.body = _.omit(req.body, 'subscription')
+      const { subscription, clientNow } = req.body
+      req.body = _.omit(req.body, ['subscription', 'clientNow'])
       const updatedDoc = await Note.findOneAndUpdate(
         {
           createdBy: req.user._id,
@@ -64,8 +64,8 @@ export default {
       // const now = moment().format('YYYY-MM-DDTHH:mm:ss')
       // const date = moment(updatedDoc.due).format('YYYY-MM-DDTHH:mm:ss')
 
-      const now = moment.utc().format('YYYY-MM-DDTHH:mm:ss')
-      const date = moment.utc(updatedDoc.due).format('YYYY-MM-DDTHH:mm:ss')
+      const now = moment(clientNow).toISOString()
+      const date = moment(updatedDoc.due).toISOString()
 
       // const now = moment.utc().local().toISOString()
       // const date = moment(updatedDoc.due).format()
