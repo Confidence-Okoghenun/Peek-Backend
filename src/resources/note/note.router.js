@@ -7,13 +7,13 @@ const router = Router()
 router
   .route('/')
   .get(controllers.getMany)
-  .post(controllers.createOne)
+  .post(controllers.createOne, controllers.setReminder)
 
 // /api/note/:id
 router
   .route('/:id')
   .get(controllers.getOne)
-  .put(controllers.updateOne)
+  .put(controllers.updateOne, controllers.setReminder)
   .delete(controllers.removeOne)
 
 export default router
