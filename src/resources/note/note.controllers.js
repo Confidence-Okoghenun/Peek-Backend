@@ -16,7 +16,7 @@ const agenda = new Agenda({
 agenda.define('send reminders', async job => {
   const { note, subscription } = job.attrs.data
   console.log('## fired reminder for ' + note._id)
-  
+
   const payload = JSON.stringify({
     title: note.title,
     body: note.content,
@@ -82,7 +82,9 @@ export default {
       reminder.note = updatedDoc
       req.reminder = reminder
 
-      res.status(200).json({ data: updatedDoc })
+      res.status(200).json({
+        data: updatedDoc
+      })
       return next()
     } catch (e) {
       console.error(e)
@@ -118,3 +120,5 @@ export default {
     }
   }
 }
+
+// console.log(unescape('&amp;lt;mark&amp;gt;true&amp;lt;/mark&amp;gt;'))

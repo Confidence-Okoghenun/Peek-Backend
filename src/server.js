@@ -10,6 +10,7 @@ import noteRouter from './resources/note/note.router'
 import { signin, protect } from './utils/auth'
 import passport from 'passport'
 import webpush from 'web-push'
+import mongoSanitize from 'express-mongo-sanitize'
 
 export const app = express()
 
@@ -17,9 +18,11 @@ app.disable('x-powered-by')
 
 app.use(cors())
 app.use(json())
-app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
+app.use(mongoSanitize());
 app.use(passport.initialize())
+app.use(urlencoded({ extended: true }))
+
 webpush.setVapidDetails(
   'mailto:test@test.com',
   process.env.webPush_publicKey,

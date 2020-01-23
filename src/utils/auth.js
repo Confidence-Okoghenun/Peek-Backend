@@ -7,6 +7,8 @@ import { Strategy as GoogleTokenStrategy } from 'passport-google-token'
 import config from '../config'
 import { User } from '../resources/user/user.model'
 import jwt from 'jsonwebtoken'
+import { Note } from '../resources/note/note.model'
+import moment from 'moment'
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load()
@@ -32,6 +34,19 @@ const socialCB = async (accessToken, refreshToken, profile, done) => {
     if (!user) {
       const newUser = await User.create(Profile)
       console.log('## created new user')
+
+      const welcomeNote = {
+        title: 'Welcome to Peeker! 🎉🎉🎉',
+        label: ['cool label 😎'],
+        content:
+          "So what can you do with Peeker?<div>Well a lot 😜. You can take notes and group them with labels, archive or trash notes when you feel like, pin notes like this one, perform deep search on notes, set reminders and receive push notification.</div><br><div>Wooh! That's a lot!</div><div>Guess what? You can install Peeker and work even faster 🔥🔥🔥 (check the menu bar for this)</div>",
+        pinned: true,
+        status: 'note',
+        due: moment().format(),
+        createdBy: newUser._id
+      }
+      
+      await Note.create(welcomeNote)
       return done(null, newUser)
     }
     const oldProfile = pick(
