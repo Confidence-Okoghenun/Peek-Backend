@@ -5,9 +5,9 @@ const router = Router()
 
 // /api/note
 router
-  .route('/')
-  .get(controllers.getMany)
-  .post(controllers.createOne, controllers.setReminder)
+.route('/')
+.get(controllers.getMany)
+.post(controllers.createOne, controllers.setReminder)
 
 // /api/note/:id
 router
