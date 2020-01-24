@@ -18,9 +18,8 @@ agenda.define('send reminders', async job => {
   console.log('## fired reminder for ' + note._id)
 
   const payload = JSON.stringify({
-    title: note.title.replace(/<\/?[^>]+(>|$)/g, ""),
-    body: note.content.replace(/<\/?[^>]+(>|$)/g, ""),
-    time: moment(note.due).format('MMMM Do YYYY, h:mm a')
+    title: note.title.replace(/<\/?[^>]+(>|$)/g, ' ').replace(/  +/g, ' '),
+    body: note.content.replace(/<\/?[^>]+(>|$)/g, ' ').replace(/  +/g, ' ')
   })
 
   webpush
