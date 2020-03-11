@@ -10,13 +10,21 @@ cloudinary.config({
 
 // /api/image
 router.route('/').delete((req, res) => {
-  console.log(req.body)
-  cloudinary.v2.api.delete_resources([req.body.public_id], function(
-    error,
-    result
-  ) {
-    console.log(result, error)
-  })
+  try{
+      cloudinary.v2.api.delete_resources([req.body.public_id], function(
+        error,
+        result
+      ) {
+        if (error) {
+          res.status(402).send({data: error})
+        } else {
+          res.status(200).json({data: result})
+        }
+      })
+  }catch (e) {
+    console.error(e)
+    res.end()
+  }
 })
 
 export default router
