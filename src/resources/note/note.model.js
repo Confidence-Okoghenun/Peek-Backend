@@ -8,6 +8,7 @@ const noteSchema = new mongoose.Schema(
       maxlength: 200,
       default: ''
     },
+    image: [],
     label: [
       {
         type: String,

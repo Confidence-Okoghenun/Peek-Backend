@@ -7,6 +7,7 @@ import config from './config'
 import { connect } from './utils/db'
 import userRouter from './resources/user/user.router'
 import noteRouter from './resources/note/note.router'
+import imageRouter from './resources/image/image.router'
 import { signin, protect } from './utils/auth'
 import passport from 'passport'
 import webpush from 'web-push'
@@ -37,6 +38,7 @@ app.use('/signin', signin)
 app.use('/api', protect)
 app.use('/api/user', userRouter)
 app.use('/api/note', noteRouter)
+app.use('/api/image', imageRouter)
 
 export const start = async () => {
   try {
